@@ -3,6 +3,7 @@ package com.example.newsapp.ui.homescreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.example.newsapp.data.models.response.ArticleResponse
 import com.example.newsapp.ui.base.State
 import org.koin.androidx.compose.getViewModel
@@ -72,17 +74,25 @@ fun NewsViews(
 
                             ){
 
-                                Text(
-                                    text = article.title ?: "-",
-                                    style = MaterialTheme.typography.h6,
-                                    modifier = Modifier.weight(1F),
+                                Image(
+                                    painter = rememberAsyncImagePainter(article.urlToImage),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(50.dp)
                                 )
-                                Text(
-                                    text = article.description ?: "-",
-                                )
-                                Text(
-                                    text = article.publishedAt ?: "-",
-                                )
+                                Column {
+                                    Text(
+                                        text = article.title ?: "-",
+                                        style = MaterialTheme.typography.h6,
+                                        modifier = Modifier.weight(1F),
+                                    )
+                                    Text(
+                                        text = article.description ?: "-",
+                                    )
+                                    Text(
+                                        text = article.publishedAt ?: "-",
+                                    )
+                                }
+
                             }
                         }
                     }

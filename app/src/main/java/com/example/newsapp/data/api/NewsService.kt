@@ -1,9 +1,7 @@
 package com.example.newsapp.data.api
 
-import com.example.newsapp.data.models.NewsResponse
 import com.example.newsapp.data.models.response.ArticleResponse
 import com.example.newsapp.util.Constants.Companion.API_KEY
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -34,5 +32,5 @@ interface NewsService {
         articleName: String,
         @Query("apiKey")
         apiKey: String = API_KEY
-    ): ArticleResponse
+    ): ArticleResponse?
 }

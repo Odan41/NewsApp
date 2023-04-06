@@ -7,11 +7,11 @@ import com.example.newsapp.data.db.dao.ArticleDao
 
 @Database(
     entities = [Article::class],
-    version = 1
+    version = ArticleDatabase.Version
 )
 abstract class ArticleDatabase : RoomDatabase() {
     
-    abstract fun getArticleDao():ArticleDao
+    abstract fun articleDao():ArticleDao
 
     companion object {
         const val Version = 1

@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import com.example.newsapp.data.api.NewsService
+import com.example.newsapp.data.db.ArticleDatabase
 import com.example.newsapp.data.repositories.NewsRepository
 import com.example.newsapp.ui.detail.ArticleDetailViewModel
 import com.example.newsapp.ui.homescreen.BreakingNewsViewModel
@@ -32,7 +33,6 @@ val dataModule = module {
 val uiModule = module {
     viewModel { BreakingNewsViewModel(get()) }
     viewModel { (articleName: String) -> ArticleDetailViewModel(articleName, get()) }
-
 }
 
 private fun Module.repositories() {
@@ -48,6 +48,20 @@ private fun Module.apiServices() {
 //    single { DataStorage(androidApplication().dataStore) }
 //}
 
+private fun Module.db() {
+    // DB
+    single {
+        Room
+            .databaseBuilder(
+                context = androidApplication(),
+                klass = ArticleDatabase::class.java,
+                name = ArticleDatabase.Name,
+            )
+            .build()
+    }
+    // Dao
+    single { get<ArticleDatabase>().articleDao() }
+}
 
 
 private val json = Json {

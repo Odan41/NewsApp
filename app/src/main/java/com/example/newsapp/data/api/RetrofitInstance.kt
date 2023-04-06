@@ -1,7 +1,7 @@
 package com.example.umte_project_news.data.api
 
-import com.example.umte_project_news.util.Constants
-import com.example.umte_project_news.util.Constants.Companion.BASE_URL
+import com.example.newsapp.util.Constants
+import com.example.newsapp.util.Constants.Companion.BASE_URL
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType

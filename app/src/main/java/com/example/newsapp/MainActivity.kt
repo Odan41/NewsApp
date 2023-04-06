@@ -21,9 +21,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.newsapp.data.models.response.ArticleResponse
+import com.example.newsapp.ui.detail.ArticleDetailScreen
 import com.example.newsapp.ui.homescreen.BreakingNewsScreen
 import com.example.newsapp.ui.theme.NewsAppTheme
 
@@ -77,8 +81,16 @@ fun Navigation(navController: NavHostController) {
         composable("home"){
             BreakingNewsScreen(
                 onNavigateDetail = {article -> navController.navigate(
-                    route="detail"
+                    route="detail/{$article}"
                 )}
+            )
+        }
+        composable(
+            route = "detail/{articleName}",
+            arguments = listOf(navArgument("articleName"){ type = NavType.StringType})
+        ){navBackStackEntry ->
+            ArticleDetailScreen(
+                articleName = navBackStackEntry.arguments?.getString("articleName").orEmpty(),
             )
         }
         composable("favourite"){

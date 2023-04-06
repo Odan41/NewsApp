@@ -27,4 +27,12 @@ interface NewsService {
         @Query("apiKey")
         apiKey: String = API_KEY
     ): List<ArticleResponse>
+
+    @GET("v2/everything")
+    suspend fun fetchArticle(
+        @Query("q")
+        articleName: String,
+        @Query("apiKey")
+        apiKey: String = API_KEY
+    ): ArticleResponse
 }

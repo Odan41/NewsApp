@@ -7,7 +7,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class ArticleDetailViewModel(
-    private val article: ArticleResponse,
+    private val articleName: String,
+    private val repo: NewsRepository,
 ) : BaseViewModel() {
 
     private val _articleDetail = MutableStateFlow<ArticleResponse?>(null)
@@ -19,8 +20,10 @@ class ArticleDetailViewModel(
 
     private fun fetchRocketDetail() {
         launch {
-            val article = article
-            _articleDetail.emit(article)
+            repo.fetchArticle(articleName)
+                .let { detail ->
+                    _articleDetail.emit(detail)
+                }
         }
     }
 }

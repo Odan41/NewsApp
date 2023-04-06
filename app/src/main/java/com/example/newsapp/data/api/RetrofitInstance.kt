@@ -8,9 +8,6 @@ import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 
-class RetrofitInstance {
-
-}
 private val json = Json {
     ignoreUnknownKeys = true
 }

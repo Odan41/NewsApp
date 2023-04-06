@@ -7,6 +7,8 @@ class NewsRepository(
 ) {
     suspend fun fetchBreakingNews() = api.getBreakingNews()
 
-    suspend fun  fetchSearchNews(searchWord: String) =
+    suspend fun fetchSearchNews(searchWord: String) =
         api.searchForNews(searchWord)
+
+    suspend fun fetchArticle(articleName: String) = api.fetchArticle(articleName)
 }

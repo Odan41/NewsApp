@@ -6,17 +6,13 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface NewsService {
-    @GET("v2/top-headlines")
+    @GET("top-headlines")
     suspend fun getBreakingNews(
-        @Query("country")
-        countryCode: String = "us",
-        @Query("page")
-        pageNumber: Int = 1,
         @Query("apiKey")
         apiKey: String = API_KEY
     ): List<ArticleResponse>
 
-    @GET("v2/everything")
+    @GET("everything")
     suspend fun searchForNews(
         @Query("q")
         searchQuery: String,
@@ -26,7 +22,7 @@ interface NewsService {
         apiKey: String = API_KEY
     ): List<ArticleResponse>
 
-    @GET("v2/everything")
+    @GET("everything")
     suspend fun fetchArticle(
         @Query("q")
         articleName: String,

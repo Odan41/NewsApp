@@ -75,11 +75,6 @@ private fun createRetrofit(
 ) = Retrofit.Builder().apply {
     client(client)
     baseUrl(baseUrl)
-    addConverterFactory(
-        json.asConverterFactory(
-            MediaType.get("application/json")
-        )
-    )
 }.build()
 
 private fun createClient() = OkHttpClient.Builder().build()

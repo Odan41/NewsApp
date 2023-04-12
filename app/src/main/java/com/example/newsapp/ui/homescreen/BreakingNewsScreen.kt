@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.newsapp.data.models.response.ArticleResponse
+import com.example.newsapp.data.models.response.NewsResponse
 import com.example.newsapp.ui.base.State
 import org.koin.androidx.compose.getViewModel
 
@@ -27,13 +28,13 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun BreakingNewsScreen(
     viewModel: BreakingNewsViewModel = getViewModel(),
-    onNavigateDetail: (ArticleResponse) -> Unit = {},
+    onNavigateDetail: (NewsResponse.Article) -> Unit = {},
 ){
     val news = viewModel.news.collectAsState()
     val state = viewModel.state.collectAsState()
 
     NewsViews(
-        news = news.value,
+        news = news.value.articles,
         state = state.value,
         onNavigateDetail = onNavigateDetail,
     )
@@ -42,9 +43,9 @@ fun BreakingNewsScreen(
 
 @Composable
 fun NewsViews(
-    news: List<ArticleResponse> = emptyList(),
+    news: List<NewsResponse.Article> = emptyList(),
     state: State = State.None,
-    onNavigateDetail: (ArticleResponse) -> Unit = {},
+    onNavigateDetail: (NewsResponse.Article) -> Unit = {},
 ){
     Box(
         modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background),

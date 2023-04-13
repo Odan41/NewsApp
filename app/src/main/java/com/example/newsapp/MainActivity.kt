@@ -29,6 +29,7 @@ import androidx.navigation.navArgument
 import com.example.newsapp.data.models.response.ArticleResponse
 import com.example.newsapp.ui.detail.ArticleDetailScreen
 import com.example.newsapp.ui.homescreen.BreakingNewsScreen
+import com.example.newsapp.ui.search.SearchScreen
 import com.example.newsapp.ui.theme.NewsAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -97,7 +98,11 @@ fun Navigation(navController: NavHostController) {
             //FavouriteScreen()
         }
         composable("search"){
-            //SearchScreen()
+            SearchScreen(
+                onNavigateDetail = {article -> navController.navigate(
+                    route="detail/{$article}"
+                )}
+            )
         }
     }
 }

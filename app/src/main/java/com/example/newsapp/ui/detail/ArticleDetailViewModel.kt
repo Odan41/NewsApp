@@ -1,6 +1,7 @@
 package com.example.newsapp.ui.detail
 
 import com.example.newsapp.data.models.response.ArticleResponse
+import com.example.newsapp.data.models.response.NewsResponse
 import com.example.newsapp.data.repositories.NewsRepository
 import com.example.newsapp.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +12,7 @@ class ArticleDetailViewModel(
     private val repo: NewsRepository,
 ) : BaseViewModel() {
 
-    private val _articleDetail = MutableStateFlow<ArticleResponse?>(null)
+    private val _articleDetail = MutableStateFlow<NewsResponse?>(null)
     val articleDetail = _articleDetail.asStateFlow()
 
     init {
@@ -21,8 +22,8 @@ class ArticleDetailViewModel(
     private fun fetchRocketDetail() {
         launch {
             repo.fetchArticle(articleName)
-                .let { detail ->
-                    _articleDetail.emit(detail)
+                .let { responce ->
+                    _articleDetail.emit(responce)
                 }
         }
     }

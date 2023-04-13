@@ -16,6 +16,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -75,7 +76,13 @@ private fun createRetrofit(
 ) = Retrofit.Builder().apply {
     client(client)
     baseUrl(baseUrl)
+    addConverterFactory(
+        json.asConverterFactory(
+            "application/json".toMediaType()
+        )
+    )
 }.build()
+
 
 private fun createClient() = OkHttpClient.Builder().build()
 

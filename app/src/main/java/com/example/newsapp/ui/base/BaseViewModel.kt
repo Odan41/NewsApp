@@ -38,6 +38,7 @@ abstract class BaseViewModel : ViewModel() {
         block: (suspend CoroutineScope.() -> Result),
     ) = CoroutineExceptionHandler { _, throwable ->
         onError?.invoke(throwable)
+        throwable.printStackTrace()
         state?.tryEmit(
             State.Failure(
                 error = throwable,

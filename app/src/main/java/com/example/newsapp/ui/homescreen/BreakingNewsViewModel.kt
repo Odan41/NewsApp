@@ -23,8 +23,10 @@ class BreakingNewsViewModel(
 
     private fun fetchBreakingNews(){
         launch {
-            val news = repo.fetchBreakingNews()
-            _news.emit(news)
+            repo.fetchBreakingNews()
+                .let { responce ->
+                _news.emit(responce)
+            }
         }
     }
 }

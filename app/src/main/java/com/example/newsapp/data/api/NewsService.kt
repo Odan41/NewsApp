@@ -10,7 +10,9 @@ interface NewsService {
     @GET("top-headlines")
     suspend fun getBreakingNews(
         @Query("apiKey")
-        apiKey: String = API_KEY
+        apiKey: String = API_KEY,
+        @Query("country")
+        country: String = "us",
     ): NewsResponse
 
     @GET("everything")

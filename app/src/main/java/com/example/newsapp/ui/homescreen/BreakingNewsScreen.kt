@@ -16,7 +16,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.newsapp.data.models.response.ArticleResponse
@@ -28,7 +30,7 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun BreakingNewsScreen(
     viewModel: BreakingNewsViewModel = getViewModel(),
-    onNavigateDetail: (NewsResponse.Article) -> Unit = {},
+    onNavigateDetail: (String) -> Unit = {},
 ){
     val news = viewModel.news.collectAsState()
     val state = viewModel.state.collectAsState()
@@ -45,10 +47,10 @@ fun BreakingNewsScreen(
 fun NewsViews(
     news: List<NewsResponse.Article> = emptyList(),
     state: State = State.None,
-    onNavigateDetail: (NewsResponse.Article) -> Unit = {},
+    onNavigateDetail: (String) -> Unit = {},
 ){
     Box(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background),
+        modifier = Modifier.fillMaxSize().background(Color.LightGray),
         contentAlignment = Alignment.Center
     ){
         when(state){
@@ -57,7 +59,7 @@ fun NewsViews(
             }
             is State.Failure ->{
                 Button(onClick = { state.repeat()}){
-                    Text(text = "Retry")
+                    Text(text = state.error.message.toString())
                 }
             }
             is State.Success->{
@@ -66,28 +68,26 @@ fun NewsViews(
                     contentPadding = PaddingValues(all = 8.dp),
                 ){
                     items(news){ article ->
-                        Card {
+                        Card{
                             Row(
                                 modifier = Modifier.clickable {
-                                    onNavigateDetail(article)
+                                    onNavigateDetail(article.title)
                                 }
                                     .padding(16.dp)
-
                             ){
-
                                 Image(
                                     painter = rememberAsyncImagePainter(article.urlToImage),
                                     contentDescription = null,
-                                    modifier = Modifier.size(50.dp)
+                                    modifier = Modifier.size(150.dp)
                                 )
-                                Column {
+
+                                Column(
+                                    modifier = Modifier.padding(8.dp)
+                                ) {
                                     Text(
                                         text = article.title ?: "-",
                                         style = MaterialTheme.typography.h6,
-                                        modifier = Modifier.weight(1F),
-                                    )
-                                    Text(
-                                        text = article.description ?: "-",
+                                        fontWeight = FontWeight.Bold
                                     )
                                     Text(
                                         text = article.publishedAt ?: "-",

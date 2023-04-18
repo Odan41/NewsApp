@@ -1,5 +1,6 @@
 package com.example.newsapp
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -33,6 +34,7 @@ import com.example.newsapp.ui.search.SearchScreen
 import com.example.newsapp.ui.theme.NewsAppTheme
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -58,7 +60,7 @@ class MainActivity : ComponentActivity() {
                             ),
                             BottomNavItem(
                                 name = "Search",
-                                route = "search",
+                                route = "search/tesla",
                                 icon = Icons.Default.Search
                             ),
                         ),
@@ -97,13 +99,18 @@ fun Navigation(navController: NavHostController) {
         composable("favourite"){
             //FavouriteScreen()
         }
-        composable("search"){
+        composable(
+            route = "search/{searchedWord}",
+            arguments = listOf(navArgument("searchedWord"){ type = NavType.StringType}))
+            { navBackStackEntry ->
             SearchScreen(
+                searchedWord = navBackStackEntry.arguments?.getString("searchedWord").orEmpty(),
                 onNavigateDetail = {article -> navController.navigate(
                     route="detail/{$article}"
-                )}
-            )
-        }
+                )},
+
+            )}
+
     }
 }
 

@@ -2,33 +2,47 @@ package com.example.newsapp.ui.search
 
 import android.content.Context
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import com.example.newsapp.ui.base.State
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.newsapp.data.models.response.NewsResponse
-import com.example.newsapp.ui.base.State
-import com.example.newsapp.ui.detail.ArticleDetailViewModel
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 
 
 @Composable
 fun SearchScreen(
+    searchedWord: String = "",
     onNavigateDetail: (String) -> Unit = {},
+    viewModel: SearchViewModel = getViewModel{
+        parametersOf(searchedWord)
+    },
 ) {
 
     val context = LocalContext.current
     var inputSearch by remember { mutableStateOf("") }
+    val state = viewModel.state.collectAsState()
+    val news = viewModel.searchedNews.collectAsState()
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -48,15 +62,12 @@ fun SearchScreen(
                 )
             )
             Button(
-                OnClick={
-                    SearchedNewsView(
-                        searchWord = inputSearch,
-                        onNavigateDetail = onNavigateDetail,
-                    )
+                onClick = {
                 }
             ){
                 Icon(
-                    imageVector = Icons.Default.Search
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "",
                 )
             }
 
@@ -65,16 +76,22 @@ fun SearchScreen(
     }
 
 
+    news.value?.let {
+        SearchedNewsView(
+            news = it.articles,
+            state = state.value,
+            onNavigateDetail = onNavigateDetail,
+        )}
+
 }
 
 @Composable
 fun SearchedNewsView(
-    searchWord: String,
-    viewModel: SearchViewModel = getViewModel(),
+    news: List<NewsResponse.Article> = emptyList(),
+    state: State = State.None,
     onNavigateDetail: (String) -> Unit = {},
 ){
-    val state = viewModel.state.collectAsState()
-    val news = viewModel.searchedNews.collectAsState()
+
     Box(
         modifier = Modifier.fillMaxSize().background(Color.LightGray),
         contentAlignment = Alignment.Center
@@ -128,3 +145,5 @@ fun SearchedNewsView(
         }
     }
 }
+
+

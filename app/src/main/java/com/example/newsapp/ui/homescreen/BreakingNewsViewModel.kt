@@ -14,7 +14,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
 class BreakingNewsViewModel(
     private val repo : NewsRepository,
 ) : BaseViewModel() {
-    private val _news = MutableStateFlow<NewsResponse>(NewsResponse("",0, emptyList()))
+    private val _news = MutableStateFlow<NewsResponse?>(null)
     val news = _news.asStateFlow()
 
     init {

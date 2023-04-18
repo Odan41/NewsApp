@@ -35,11 +35,13 @@ fun BreakingNewsScreen(
     val news = viewModel.news.collectAsState()
     val state = viewModel.state.collectAsState()
 
-    NewsViews(
-        news = news.value.articles,
+    news.value?.let {
+        NewsViews(
+        news = it.articles,
         state = state.value,
         onNavigateDetail = onNavigateDetail,
     )
+    }
 
 }
 

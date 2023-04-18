@@ -20,7 +20,7 @@ class SearchViewModel (
 
     private fun fetchRocketDetail() {
         launch {
-            repo.fetchArticle(searchedWord)
+            repo.fetchSearchNews(searchedWord)
                 .let { responce ->
                     _searchedNews.emit(responce)
                 }

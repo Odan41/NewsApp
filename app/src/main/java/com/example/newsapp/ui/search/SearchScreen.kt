@@ -32,56 +32,25 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 fun SearchScreen(
-    searchedWord: String = "",
+    viewModel: SearchViewModel = getViewModel(),
     onNavigateDetail: (String) -> Unit = {},
-    viewModel: SearchViewModel = getViewModel{
-        parametersOf(searchedWord)
-    },
 ) {
 
-    val context = LocalContext.current
-    var inputSearch by remember { mutableStateOf("") }
+
+    val inputSearch = viewModel.searchedText.collectAsState()
     val state = viewModel.state.collectAsState()
     val news = viewModel.searchedNews.collectAsState()
-
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        Row{
-            OutlinedTextField(
-                value = inputSearch,
-                onValueChange = { inputSearch = it },
-                label = {
-                    Text(text = "Search for article")
-                },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Done,
-                )
-            )
-            Button(
-                onClick = {
-                }
-            ){
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "",
-                )
-            }
-
-        }
-
-    }
+    val isSearching = viewModel.isSearching.collectAsState()
 
 
-    news.value?.let {
-        SearchedNewsView(
-            news = it.articles,
-            state = state.value,
-            onNavigateDetail = onNavigateDetail,
-        )}
+
+
+    SearchedNewsView(
+        news = news.value?.articles ?: emptyList(),
+        state = state.value,
+        inputSearch = inputSearch.value,
+        onNavigateDetail = onNavigateDetail,
+    )
 
 }
 
@@ -89,23 +58,29 @@ fun SearchScreen(
 fun SearchedNewsView(
     news: List<NewsResponse.Article> = emptyList(),
     state: State = State.None,
+    inputSearch: String,
+    viewModel: SearchViewModel = getViewModel(),
     onNavigateDetail: (String) -> Unit = {},
 ){
 
-    Box(
+    Column(
         modifier = Modifier.fillMaxSize().background(Color.LightGray),
-        contentAlignment = Alignment.Center
+
     ){
-        when(state){
-            State.None, State.Loading -> {
-                CircularProgressIndicator()
-            }
-            is State.Failure ->{
-                Button(onClick = { state.repeat()}){
-                    Text(text = state.error.message.toString())
-                }
-            }
-            is State.Success->{
+        Spacer(modifier = Modifier.height(20.dp))
+        Row(modifier = Modifier.fillMaxWidth().padding(8.dp).background(Color.White)){
+            OutlinedTextField(
+                value = inputSearch,
+                onValueChange = viewModel::onSearchTextChange,
+                label = {
+                    Text(text = "Search for article")
+                },
+                modifier = Modifier.fillMaxWidth().background(Color.White).padding(8.dp),
+
+                )
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = PaddingValues(all = 8.dp),
@@ -143,7 +118,5 @@ fun SearchedNewsView(
                 }
             }
         }
-    }
-}
 
 

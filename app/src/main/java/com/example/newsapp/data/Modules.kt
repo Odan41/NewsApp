@@ -10,7 +10,9 @@ import com.example.newsapp.data.api.NewsService
 import com.example.newsapp.data.db.ArticleDatabase
 import com.example.newsapp.data.repositories.NewsRepository
 import com.example.newsapp.ui.detail.ArticleDetailViewModel
+import com.example.newsapp.ui.favourite.RoomViewModel
 import com.example.newsapp.ui.homescreen.BreakingNewsViewModel
+import com.example.newsapp.ui.search.SearchViewModel
 import com.example.newsapp.util.Constants.Companion.BASE_URL
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -29,11 +31,14 @@ val appModules by lazy { listOf(dataModule, uiModule) }
 val dataModule = module {
     repositories()
     apiServices()
+    db()
 }
 
 val uiModule = module {
     viewModel { BreakingNewsViewModel(get()) }
     viewModel { (articleName: String) -> ArticleDetailViewModel(articleName, get()) }
+    viewModel { RoomViewModel(get()) }
+    viewModel { SearchViewModel(get()) }
 }
 
 private fun Module.repositories() {

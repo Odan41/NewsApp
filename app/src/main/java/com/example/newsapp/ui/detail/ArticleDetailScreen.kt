@@ -23,6 +23,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.newsapp.data.models.response.ArticleResponse
 import com.example.newsapp.data.models.response.NewsResponse
 import com.example.newsapp.ui.base.State
+import com.example.newsapp.ui.favourite.RoomViewModel
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -64,7 +65,7 @@ fun ArticleDetailScreen(
 }
 
 @Composable
-fun ArticleDetailView(detail: NewsResponse.Article, context: Context) {
+fun ArticleDetailView(detail: NewsResponse.Article, context: Context, viewModel: RoomViewModel = getViewModel ()) {
     Column(
         modifier = Modifier.padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -91,6 +92,11 @@ fun ArticleDetailView(detail: NewsResponse.Article, context: Context) {
             launchSource(context,detail.url)
         }) {
             Text("Open full article in browser")
+        }
+        Button(onClick = {
+            viewModel.addArticle(detail)
+        }) {
+            Text("Save article to favourites")
         }
 
 

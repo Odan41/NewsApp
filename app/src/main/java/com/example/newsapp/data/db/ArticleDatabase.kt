@@ -4,9 +4,10 @@ import android.content.Context
 import androidx.room.*
 import com.example.newsapp.data.models.Article
 import com.example.newsapp.data.db.dao.ArticleDao
+import com.example.newsapp.data.db.entities.ArticleEntity
 
 @Database(
-    entities = [Article::class],
+    entities = [ArticleEntity::class],
     version = ArticleDatabase.Version
 )
 abstract class ArticleDatabase : RoomDatabase() {

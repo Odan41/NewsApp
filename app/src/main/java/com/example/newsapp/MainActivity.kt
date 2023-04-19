@@ -29,6 +29,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.newsapp.data.models.response.ArticleResponse
 import com.example.newsapp.ui.detail.ArticleDetailScreen
+import com.example.newsapp.ui.favourite.FavouriteScreen
 import com.example.newsapp.ui.homescreen.BreakingNewsScreen
 import com.example.newsapp.ui.search.SearchScreen
 import com.example.newsapp.ui.theme.NewsAppTheme
@@ -60,7 +61,7 @@ class MainActivity : ComponentActivity() {
                             ),
                             BottomNavItem(
                                 name = "Search",
-                                route = "search/tesla",
+                                route = "search",
                                 icon = Icons.Default.Search
                             ),
                         ),
@@ -97,14 +98,16 @@ fun Navigation(navController: NavHostController) {
             )
         }
         composable("favourite"){
-            //FavouriteScreen()
+            FavouriteScreen(
+                onNavigateDetail = {article -> navController.navigate(
+                    route="detail/{$article}"
+                )},
+            )
         }
         composable(
-            route = "search/{searchedWord}",
-            arguments = listOf(navArgument("searchedWord"){ type = NavType.StringType}))
-            { navBackStackEntry ->
+            route = "search")
+            {
             SearchScreen(
-                searchedWord = navBackStackEntry.arguments?.getString("searchedWord").orEmpty(),
                 onNavigateDetail = {article -> navController.navigate(
                     route="detail/{$article}"
                 )},

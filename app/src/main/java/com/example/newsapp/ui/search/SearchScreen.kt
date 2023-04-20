@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.CircularProgressIndicator
@@ -64,10 +65,10 @@ fun SearchedNewsView(
 ){
 
     Column(
-        modifier = Modifier.fillMaxSize().background(Color.LightGray),
+        modifier = Modifier.fillMaxSize().background(Color.White),
 
     ){
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         Row(modifier = Modifier.fillMaxWidth().padding(8.dp).background(Color.White)){
             OutlinedTextField(
                 value = inputSearch,
@@ -79,24 +80,28 @@ fun SearchedNewsView(
 
                 )
         }
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
                 LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
                     contentPadding = PaddingValues(all = 8.dp),
                 ){
                     items(news){ article ->
-                        Card{
+                        Card(
+                            backgroundColor = MaterialTheme.colors.secondary,
+                            shape = RoundedCornerShape(10.dp),
+                            elevation = 4.dp
+                        ){
                             Row(
                                 modifier = Modifier.clickable {
                                     onNavigateDetail(article.title)
                                 }
-                                    .padding(16.dp)
+                                    .padding(8.dp)
                             ){
                                 Image(
                                     painter = rememberAsyncImagePainter(article.urlToImage),
                                     contentDescription = null,
-                                    modifier = Modifier.size(150.dp)
+                                    modifier = Modifier.size(150.dp).padding(8.dp)
                                 )
 
                                 Column(

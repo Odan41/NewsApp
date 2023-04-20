@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -13,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import org.koin.androidx.compose.getViewModel
 
@@ -24,24 +26,36 @@ fun FavouriteScreen(
     val articles = viewModel.articles.collectAsState(emptyList())
 
     Column{
+        Text(
+            text = "Favourite",
+            fontWeight = FontWeight.Bold,
+            fontSize = 30.sp,
+            color = MaterialTheme.colors.primary,
+            modifier = Modifier.padding(8.dp)
+        )
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(all = 8.dp),
         ) {
             items(
                 items = articles.value,
                 ) { article ->
-                Card {
+                Card (
+                    backgroundColor = MaterialTheme.colors.secondary,
+                    shape = RoundedCornerShape(10.dp),
+                    elevation = 4.dp
+
+                ){
                     Row(
                         modifier = Modifier.clickable {
                             onNavigateDetail(article.title)
                         }
-                            .padding(16.dp)
+                            .padding(8.dp)
                     ) {
                         Image(
                             painter = rememberAsyncImagePainter(article.urlToImage),
                             contentDescription = null,
-                            modifier = Modifier.size(150.dp)
+                            modifier = Modifier.size(150.dp).padding(8.dp)
                         )
 
                         Column(

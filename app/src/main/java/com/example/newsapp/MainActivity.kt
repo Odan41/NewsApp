@@ -95,6 +95,7 @@ fun Navigation(navController: NavHostController) {
         ){navBackStackEntry ->
             ArticleDetailScreen(
                 articleName = navBackStackEntry.arguments?.getString("articleName").orEmpty(),
+                onBack = {navController.navigate(route="home")}
             )
         }
         composable("favourite"){

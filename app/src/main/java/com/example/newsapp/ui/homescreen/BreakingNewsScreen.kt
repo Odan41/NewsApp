@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.R
 
@@ -20,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.example.newsapp.data.models.response.ArticleResponse
 import com.example.newsapp.data.models.response.NewsResponse
@@ -51,10 +53,10 @@ fun NewsViews(
     state: State = State.None,
     onNavigateDetail: (String) -> Unit = {},
 ){
-    Box(
-        modifier = Modifier.fillMaxSize().background(Color.LightGray),
-        contentAlignment = Alignment.Center
+    Column(
+        modifier = Modifier.fillMaxSize().background(Color.White),
     ){
+
         when(state){
             State.None, State.Loading -> {
                 CircularProgressIndicator()
@@ -65,22 +67,33 @@ fun NewsViews(
                 }
             }
             is State.Success->{
+                Text(
+                    text = "Breaking News",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 30.sp,
+                    color = MaterialTheme.colors.primary,
+                    modifier = Modifier.padding(8.dp)
+                )
                 LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
                     contentPadding = PaddingValues(all = 8.dp),
                 ){
                     items(news){ article ->
-                        Card{
+                        Card(
+                            backgroundColor = MaterialTheme.colors.secondary,
+                            shape = RoundedCornerShape(10.dp),
+                            elevation = 4.dp
+                        ){
                             Row(
                                 modifier = Modifier.clickable {
                                     onNavigateDetail(article.title)
                                 }
-                                    .padding(16.dp)
+                                    .padding(8.dp)
                             ){
                                 Image(
                                     painter = rememberAsyncImagePainter(article.urlToImage),
                                     contentDescription = null,
-                                    modifier = Modifier.size(150.dp)
+                                    modifier = Modifier.size(150.dp).padding(8.dp)
                                 )
 
                                 Column(

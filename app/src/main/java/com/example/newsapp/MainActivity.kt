@@ -85,7 +85,7 @@ fun Navigation(navController: NavHostController) {
         composable("home"){
             BreakingNewsScreen(
                 onNavigateDetail = {article -> navController.navigate(
-                    route="detail/{$article}"
+                    route="detailBreaking/{$article}"
                 )}
             )
         }
@@ -95,7 +95,18 @@ fun Navigation(navController: NavHostController) {
         ){navBackStackEntry ->
             ArticleDetailScreen(
                 articleName = navBackStackEntry.arguments?.getString("articleName").orEmpty(),
-                onBack = {navController.navigate(route="home")}
+                onBack = {navController.navigate(route="home")},
+                isBreaking = false,
+            )
+        }
+        composable(
+            route = "detailBreaking/{articleName}",
+            arguments = listOf(navArgument("articleName"){ type = NavType.StringType})
+        ){navBackStackEntry ->
+            ArticleDetailScreen(
+                articleName = navBackStackEntry.arguments?.getString("articleName").orEmpty(),
+                onBack = {navController.navigate(route="home")},
+                isBreaking = true,
             )
         }
         composable("favourite"){

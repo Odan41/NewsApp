@@ -20,7 +20,7 @@ class RoomViewModel(
                 article = ArticleEntity(
                     author = article.author.orEmpty(),
                     content = article.content.orEmpty(),
-                    description = article.description,
+                    description = article.description.orEmpty(),
                     publishedAt = article.publishedAt,
                     title = article.title,
                     url = article.url,
@@ -32,21 +32,9 @@ class RoomViewModel(
 
     }
 
-
     fun removeArticle(article:NewsResponse.Article){
         launch {
-            articleDao.deleteArticle(
-                article = ArticleEntity(
-                    author = article.author.orEmpty(),
-                    content = article.content.orEmpty(),
-                    description = article.description,
-                    publishedAt = article.publishedAt,
-                    title = article.title,
-                    url = article.url,
-                    urlToImage = article.urlToImage.orEmpty()
-
-                )
-            )
+            articleDao.deleteArticle(article.title)
         }
 
     }

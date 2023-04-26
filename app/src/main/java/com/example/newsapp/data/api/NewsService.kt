@@ -14,6 +14,16 @@ interface NewsService {
         @Query("country")
         country: String = "us",
     ): NewsResponse
+    @GET("top-headlines")
+    suspend fun getBreakingArticle(
+        @Query("q")
+        searchQuery: String,
+        @Query("apiKey")
+        apiKey: String = API_KEY,
+        @Query("country")
+        country: String = "us",
+
+    ): NewsResponse
 
     @GET("everything")
     suspend fun searchForNews(

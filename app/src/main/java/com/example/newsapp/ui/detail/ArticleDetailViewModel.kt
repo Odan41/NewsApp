@@ -9,10 +9,11 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class ArticleDetailViewModel(
     private val articleName: String,
+    private val isBreaking: Boolean,
     private val repo: NewsRepository,
 ) : BaseViewModel() {
 
-    private val _articleDetail = MutableStateFlow<NewsResponse?>(null)
+    private val _articleDetail = MutableStateFlow<NewsResponse>(NewsResponse("", 0, emptyList()))
     val articleDetail = _articleDetail.asStateFlow()
 
     init {
@@ -21,10 +22,19 @@ class ArticleDetailViewModel(
 
     private fun fetchRocketDetail() {
         launch {
-            repo.fetchArticle(articleName)
-                .let { responce ->
-                    _articleDetail.emit(responce)
-                }
+            if(isBreaking){
+                repo.fetchBreakingArticle(articleName)
+                    .let { responce ->
+                        _articleDetail.emit(responce)
+                    }
+            }
+            else{
+                repo.fetchArticle(articleName)
+                    .let { responce ->
+                        _articleDetail.emit(responce)
+                    }
+            }
+
         }
     }
 }

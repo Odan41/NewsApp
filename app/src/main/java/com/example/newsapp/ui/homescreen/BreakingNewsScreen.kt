@@ -27,6 +27,8 @@ import com.example.newsapp.data.models.response.ArticleResponse
 import com.example.newsapp.data.models.response.NewsResponse
 import com.example.newsapp.ui.base.State
 import org.koin.androidx.compose.getViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @Composable
@@ -37,13 +39,12 @@ fun BreakingNewsScreen(
     val news = viewModel.news.collectAsState()
     val state = viewModel.state.collectAsState()
 
-    news.value?.let {
+
         NewsViews(
-        news = it.articles,
+        news = news.value.articles,
         state = state.value,
         onNavigateDetail = onNavigateDetail,
     )
-    }
 
 }
 
@@ -105,7 +106,7 @@ fun NewsViews(
                                         fontWeight = FontWeight.Bold
                                     )
                                     Text(
-                                        text = article.publishedAt ?: "-",
+                                        text = convertDate(article.publishedAt) ?: "-",
                                     )
                                 }
 
@@ -116,4 +117,15 @@ fun NewsViews(
             }
         }
     }
+}
+
+private fun convertDate(apiDateString:String):String{
+    val apiDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+    apiDateFormat.timeZone = TimeZone.getTimeZone("UTC")
+    val apiDate = apiDateFormat.parse(apiDateString)
+
+    val articleDateFormat = SimpleDateFormat("dd. MM. yyyy HH:mm", Locale.getDefault())
+    articleDateFormat.timeZone = TimeZone.getDefault()
+    val articleDate = articleDateFormat.format(apiDate)
+    return articleDate
 }

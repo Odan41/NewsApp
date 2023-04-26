@@ -36,7 +36,7 @@ val dataModule = module {
 
 val uiModule = module {
     viewModel { BreakingNewsViewModel(get()) }
-    viewModel { (articleName: String) -> ArticleDetailViewModel(articleName, get()) }
+    viewModel { (articleName: String, isBreaking:Boolean) -> ArticleDetailViewModel(articleName,isBreaking, get()) }
     viewModel { RoomViewModel(get()) }
     viewModel { SearchViewModel(get()) }
 }

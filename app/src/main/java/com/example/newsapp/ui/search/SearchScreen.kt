@@ -29,6 +29,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.newsapp.data.models.response.NewsResponse
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @Composable
@@ -113,7 +115,7 @@ fun SearchedNewsView(
                                         fontWeight = FontWeight.Bold
                                     )
                                     Text(
-                                        text = article.publishedAt ?: "-",
+                                        text = convertDate(article.publishedAt) ?: "-",
                                     )
                                 }
 
@@ -124,4 +126,14 @@ fun SearchedNewsView(
             }
         }
 
+private fun convertDate(apiDateString:String):String{
+    val apiDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+    apiDateFormat.timeZone = TimeZone.getTimeZone("UTC")
+    val apiDate = apiDateFormat.parse(apiDateString)
+
+    val articleDateFormat = SimpleDateFormat("dd. MM. yyyy HH:mm", Locale.getDefault())
+    articleDateFormat.timeZone = TimeZone.getDefault()
+    val articleDate = articleDateFormat.format(apiDate)
+    return articleDate
+}
 
